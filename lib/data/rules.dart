@@ -12,7 +12,7 @@ class RuleWidget extends StatelessWidget{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('オーダールールでは通常のカードにオーダーカードを加えて行う。'),
+          Text('　オーダールールでは通常のカードにオーダーカードを加えて行う。'),
           Divider(),
           Text('オーダールールの終了条件',style: TextStyle(fontSize: 18)),
           Text('　ライフポイント4000で始まり、3度ライフポイントが0になったプレイヤーは敗北する。'),
