@@ -18,7 +18,7 @@ class _DeckDetailPageState extends State<DeckDetailPage> {
   Map<int, int> _selectedCardCounts = {}; // カードIDと選択回数を追跡
   late TextEditingController _controller;
   bool isLoading = true; // ローディング状態を管理
-  String _deckName = "新しいデッキ"; // 初期デッキ名
+  String _deckName = "新しいスタック"; // 初期スタック名
   static const int _maxDeckSize = 15;
 
   @override
@@ -69,7 +69,7 @@ class _DeckDetailPageState extends State<DeckDetailPage> {
     ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(
-      const SnackBar(content: Text("デッキが保存されました")),
+      const SnackBar(content: Text("スタックが保存されました")),
     );
   }
 
@@ -195,7 +195,7 @@ class _DeckDetailPageState extends State<DeckDetailPage> {
                   });
                 },
                 decoration: const InputDecoration(
-                  hintText: "デッキ名を入力",
+                  hintText: "スタック名を入力",
                   border: InputBorder.none,
                 ),
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -204,7 +204,7 @@ class _DeckDetailPageState extends State<DeckDetailPage> {
           ],
         ),
         actions: [
-          // デッキ枚数表示
+          // スタック枚数表示
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Center(
@@ -223,7 +223,7 @@ class _DeckDetailPageState extends State<DeckDetailPage> {
       body: isLoading ? const Center(child: CircularProgressIndicator())
       : Column(
         children: [
-          // 現在のデッキリスト
+          // 現在のスタックリスト
           Flexible(
             flex: 0,
             child: _selectedCardCounts.isEmpty

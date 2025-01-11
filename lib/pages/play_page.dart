@@ -65,7 +65,7 @@ class _PlayPageState extends State<PlayPage> {
 
   void _shuffleDeck() {
     deck.shuffle(random);
-    //print("シャッフル後のデッキ: $deck"); // デバッグ用
+    //print("シャッフル後のスタック: $deck"); // デバッグ用
   }
 
   void _initDraw(){
@@ -619,7 +619,7 @@ class _PlayPageState extends State<PlayPage> {
                   ),
                 ),
               ),
-              // デッキ
+              // スタック
               GestureDetector(
                 onTap: _drawCard,
                 onTapDown: (TapDownDetails details){

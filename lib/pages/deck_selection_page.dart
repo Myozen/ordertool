@@ -11,8 +11,8 @@ class DeckSelectionPage extends StatefulWidget {
 }
 
 class _DeckSelectionPageState extends State<DeckSelectionPage> {
-  List<String> _deckIds = []; // デッキIDのリスト
-  Map<String, String> _deckNames = {}; // デッキIDに対応するデッキ名
+  List<String> _deckIds = []; // スタックIDのリスト
+  Map<String, String> _deckNames = {}; // スタックIDに対応するスタック名
 
   @override
   void initState() {
@@ -20,7 +20,7 @@ class _DeckSelectionPageState extends State<DeckSelectionPage> {
     _loadDecks();
   }
 
-  // 保存されたデッキ情報をロード
+  // 保存されたスタック情報をロード
   Future<void> _loadDecks() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -30,7 +30,7 @@ class _DeckSelectionPageState extends State<DeckSelectionPage> {
       _deckIds = keys;
       _deckNames = {
         for (var key in keys)
-          key: jsonDecode(prefs.getString(key) ?? '{}')['name'] ?? 'デッキ名なし'
+          key: jsonDecode(prefs.getString(key) ?? '{}')['name'] ?? 'スタック名なし'
       };
     });
   }
@@ -40,7 +40,7 @@ class _DeckSelectionPageState extends State<DeckSelectionPage> {
     prefs.remove(delDeckId);
   }
 
-  // 新しいデッキIDを生成
+  // 新しいスタックIDを生成
   String _generateDeckId() {
     final now = DateTime.now();
     return 'deck_${now.toIso8601String()}';
@@ -74,7 +74,7 @@ class _DeckSelectionPageState extends State<DeckSelectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("デッキ選択"),
+        title: const Text("スタック選択"),
       ),
       endDrawer: Drawer(
         child: ListView(
@@ -102,7 +102,7 @@ class _DeckSelectionPageState extends State<DeckSelectionPage> {
     );
   }
 
-  // デッキがある場合のUI
+  // スタックがある場合のUI
   Widget _buildDeckList() {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenheight = MediaQuery.of(context).size.height;
@@ -114,34 +114,34 @@ class _DeckSelectionPageState extends State<DeckSelectionPage> {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
-      itemCount: _deckIds.length + 1, // デッキ数 + 作成ボタン
+      itemCount: _deckIds.length + 1, // スタック数 + 作成ボタン
       itemBuilder: (context, index) {
         if (index == _deckIds.length) {
-          // 新しいデッキ作成ボタン
+          // 新しいスタック作成ボタン
           return _createDeckCard();
         } else {
-          // 既存のデッキアイコン
+          // 既存のスタックアイコン
           return _buildDeckCard(_deckIds[index]);
         }
       },
     );
   }
 
-  // 新しいデッキ作成ボタン
+  // 新しいスタック作成ボタン
   Widget _createDeckCard() {
     const String assetPath = 'assets/icons/create_icon.png';
     return GestureDetector(
       onTap: () async {
-        final newDeckId = _generateDeckId(); // 新しいデッキIDを生成
+        final newDeckId = _generateDeckId(); // 新しいスタックIDを生成
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => DeckDetailPage(
               deckId: newDeckId,
-              isNew: true, // 新規デッキフラグを設定
+              isNew: true, // 新規スタックフラグを設定
             ),
           ),
-        ).then((_) => _loadDecks()); // 戻った後にデッキリストを更新
+        ).then((_) => _loadDecks()); // 戻った後にスタックリストを更新
       },
       child: Card(
         elevation: 5,
@@ -164,7 +164,7 @@ class _DeckSelectionPageState extends State<DeckSelectionPage> {
     );
   }
 
-  // 既存のデッキカードのUI
+  // 既存のスタックカードのUI
   Widget _buildDeckCard(String deckId) {
     const String assetPath = 'assets/icons/deck_icon.png';
     final deckName = _deckNames[deckId] ?? "名無し";
