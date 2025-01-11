@@ -28,4 +28,4 @@ doc/api/
 
 !*.gitignore
 
-!build/web
+!build/web/
