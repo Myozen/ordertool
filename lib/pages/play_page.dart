@@ -5,6 +5,12 @@ import 'dart:convert';
 import '../data/card_repository.dart';
 import '../data/rules.dart';
 
+enum CardPlace {
+  hand,
+  zone,
+  graveyard,
+}
+
 class PlayPage extends StatefulWidget {
   final String deckId;
 
@@ -448,7 +454,7 @@ class _PlayPageState extends State<PlayPage> {
     });
   }
 
-  Widget _buildCardList(List<String> cards){
+  Widget _buildCardList(List<String> cards, CardPlace usedPlace){
     return Container(
       color: Colors.grey[100],
       child: Column(
@@ -465,7 +471,7 @@ class _PlayPageState extends State<PlayPage> {
                     final card = _allCards.firstWhere((c) => c['id'] == cardId);
                     final index = entry.key;
                     return GestureDetector(
-                      onTap: () => _showCardDetails(card,index,false),
+                      onTap: () => _showCardDetails(card,index,usedPlace),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Stack(
@@ -523,7 +529,7 @@ class _PlayPageState extends State<PlayPage> {
     });
   }
   
-  void _showCardDetails(Map<String, String> card,int cardIndex,bool usedCard) {
+  void _showCardDetails(Map<String, String> card,int cardIndex,CardPlace usedPlace) {
     final cardImage = card['image']!;
 
     showDialog(
@@ -552,14 +558,15 @@ class _PlayPageState extends State<PlayPage> {
                   },
                   child: const Text("閉じる"),
                 ),
-                TextButton(
+                usedPlace == CardPlace.graveyard ? const SizedBox() 
+                : TextButton(
                   onPressed: () {
-                    usedCard ? 
+                    usedPlace == CardPlace.zone ? 
                       _discardCard(card,cardIndex) : 
                       _useCard(card,cardIndex);
                     Navigator.pop(context);
                   },
-                  child: usedCard ? const Text("破棄") : const Text("使用"),
+                  child: usedPlace == CardPlace.zone ? const Text("破棄") : const Text("使用"),
                 ),
               ],
             );
@@ -694,7 +701,7 @@ class _PlayPageState extends State<PlayPage> {
                 itemBuilder: (context,index){
                   final card = _allCards.firstWhere((c) => c['id'] == cards[index]);
                   return GestureDetector(
-                    onTap: () => _showCardDetails(card,index,true),
+                    onTap: () => _showCardDetails(card,index,CardPlace.zone),
                     child: Card(
                       elevation: 5,
                       child: Column(
@@ -759,13 +766,13 @@ class _PlayPageState extends State<PlayPage> {
             bottom:0,
             right:0,
             left:0,
-            child: _buildCardList(hand),
+            child: _buildCardList(hand,CardPlace.hand),
           ),
           if (isShowingGraveyard) Positioned(
             bottom:0,
             right:0,
             left:0,
-            child: _buildCardList(graveyard),
+            child: _buildCardList(graveyard,CardPlace.graveyard),
           ),
         ],
       ),
